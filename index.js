@@ -12,7 +12,8 @@ mongoose
   .connect(MONGODB_URI, {
     useCreateIndex: true,
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .then(self => {
     console.log(`Connected to the database: "${self.connection.name}"`);
@@ -20,8 +21,55 @@ mongoose
     return Recipe.deleteMany()
   })
   .then(() => {
-    // Run your code here, after you have insured that the connection was made
+
+    updateDB()
+  
   })
   .catch(error => {
     console.error('Error connecting to the database', error);
   });
+
+  async function updateDB() {
+    try {
+// await Recipe.create({
+      //   title: "Bucatini Carbonara",
+      //   level: "Easy Peasy",
+      //   ingredients: [
+      //     "1 Egg",
+      //     "5 Egg Yolks",
+      //     "200g Pecorino Romano",
+      //     "1 Clove of Minced Garlic",
+      //     "300g Guanciale",
+      //     "Black Pepper",
+      //     "Olive Oil",
+      //     "500g Bucatini"
+      //   ],
+      //   cuisine: "Italian",
+      //   dishType: "main_course",
+      //  
+      //   duration: 30,
+      //   creator: "Some Italian Dude"
+      // })
+
+      await Recipe.insertMany(data);
+
+      data.forEach((recipe) => {
+        console.log(recipe.title)
+  }) 
+
+  await Recipe.findOneAndUpdate({title: "Rigatoni alla Genovese"}, {duration: 100})
+  console.log("Upd8 Success")
+
+  await Recipe.deleteOne({title: "Carrot Cake"});
+  console.log("Bye bye carrot cake")
+
+} catch (e) {
+  console.log("error occured")
+} finally {
+  mongoose.connection.close();
+}
+};
+
+
+
+
